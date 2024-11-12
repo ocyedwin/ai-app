@@ -19,7 +19,7 @@ tokenizer, model, image_processor, context_len = load_pretrained_model(
 
 model.eval()
 # video_path = "./examples/video1.mp4"
-video_path = "storage/bq/ly/bqlysvdk6mr543hraiyi12nw0s4q"
+video_path = "storage/29/9g/299gqghqhzscgf11qyew58hvvuuz"
 qs = "Describe this video in detail"
 
 vr = VideoReader(video_path, ctx=cpu(0), num_threads=1)
