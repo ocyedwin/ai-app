@@ -1,5 +1,9 @@
 class Video < ApplicationRecord
-    has_one_attached :file
+    before_create :set_uuid
 
-    validates :file, presence: true
+    private
+
+    def set_uuid
+        self.uuid = "video_#{SecureRandom.uuid}" if id.blank?
+    end
 end
