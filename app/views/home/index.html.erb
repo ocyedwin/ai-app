@@ -1,1 +1,10 @@
 <h1>Home</h1>
+
+<%= form_with(url: home_path, method: :post, local: true, multipart: true) do |f| %>
+    <div>
+      <%= f.label :video, "Upload Video" %>
+      <%= f.file_field :video, accept: 'video/*' %>
+    </div>
+    
+    <%= f.submit "Upload", class: "btn btn-primary" %>
+  <% end %>
