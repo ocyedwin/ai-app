@@ -6,4 +6,11 @@ docker exec -it \
     "export CUDA_VISIBLE_DEVICES=0 && \
     export PYTHONPATH=/workspace/app:$PYTHONPATH && \
     cd app && \
-    python -u my_ext/inference.py 2>&1 | tee /dev/tty"
+    python -u my_ext/inference.py \
+    --video_path 'storage/29/9g/299gqghqhzscgf11qyew58hvvuuz' \
+    --question 'Describe this video in detail' \
+    2>&1 | tee /dev/tty"
+
+
+# video_path = "storage/29/9g/299gqghqhzscgf11qyew58hvvuuz"
+# qs = "Describe this video in detail"

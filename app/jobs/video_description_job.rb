@@ -11,7 +11,9 @@ class VideoDescriptionJob < ApplicationJob
       "export CUDA_VISIBLE_DEVICES=0 && \
       export PYTHONPATH=/workspace/app:$PYTHONPATH && \
       cd app && \
-      python -u my_ext/inference.py"
+      python -u my_ext/inference.py \
+      --video_path 'storage/29/9g/299gqghqhzscgf11qyew58hvvuuz' \
+      --question 'What pokemon are there?'"
     BASH
 
     stdout, stderr, status = Open3.capture3(command)
