@@ -1,0 +1,33 @@
+services:
+  longvu:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 7860:7860
+    volumes:
+      - type: volume
+        source: app
+        target: /workspace/app
+      - ./my_ext:/workspace/app/my_ext
+      - ../storage:/workspace/app/storage
+    command: tail -f /dev/null
+    privileged: true
+    environment:
+      - HF_TOKEN=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
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [ gpu ]
+    shm_size: 1g
+
+volumes:
+  app:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./app
+      o: bind
