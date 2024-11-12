@@ -21,6 +21,7 @@ class VideosController < ApplicationController
 
   # POST /videos or /videos.json
   def create
+    puts "video_params: #{video_params}"
     @video = Video.new(video_params)
 
     respond_to do |format|
@@ -65,6 +66,6 @@ class VideosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def video_params
-      params.expect(video: [ :id, :metadata ])
+      params.expect(video: [ :id, :metadata, :file ])
     end
 end

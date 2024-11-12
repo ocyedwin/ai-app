@@ -1,6 +1,8 @@
 class Video < ApplicationRecord
     before_create :set_uuid
 
+    has_one_attached :file
+
     private
 
     def set_uuid

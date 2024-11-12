@@ -11,6 +11,7 @@
     </div>
   <% end %>
 
+  <!--
   <div>
     <%= form.label :id, style: "display: block" %>
     <%= form.text_field :id %>
@@ -19,6 +20,12 @@
   <div>
     <%= form.label :metadata, style: "display: block" %>
     <%= form.text_field :metadata %>
+  </div>
+  -->
+
+  <div>
+    <%= form.label :file, "Upload Video" %>
+    <%= form.file_field :file, accept: 'video/*' %>
   </div>
 
   <div>

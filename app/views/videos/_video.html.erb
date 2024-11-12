@@ -1,12 +1,22 @@
 <div id="<%= dom_id video %>">
+
+  <!--
   <p>
     <strong>Id:</strong>
     <%= video.id %>
   </p>
+  -->
 
   <p>
     <strong>Metadata:</strong>
     <%= video.metadata %>
   </p>
+
+  <div>
+    <video controls width="320">
+      <source src="<%= rails_blob_path(video.file) %>" type="<%= video.file.content_type %>">
+      Your browser does not support the video tag.
+    </video>
+  </div>
 
 </div>
