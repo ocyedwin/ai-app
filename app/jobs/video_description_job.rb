@@ -20,15 +20,16 @@ class VideoDescriptionJob < ApplicationJob
         raise "WebSocket timeout after #{timeout} seconds"
       end
 
-      ws = Faye::WebSocket::Client.new("ws://ai_app-longvu_pg:6789")
+      ws_url = Rails.env.development? ? "ws://longvu_pg:6789" : "ws://ai_app-longvu_pg:6789"
+      ws = Faye::WebSocket::Client.new(ws_url)
 
       ws.on :open do |event|
-        p [:open]
+        p [ :open ]
         message_body = {
           video_path: video_path,
           question: "Describe the video in detail."
         }.compact
-        
+
         begin
           ws.send(message_body.to_json)
         rescue => e

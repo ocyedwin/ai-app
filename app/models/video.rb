@@ -5,6 +5,13 @@ class Video < ApplicationRecord
 
     has_one_attached :file
 
+    # Add validations
+    validates :file, presence: true,
+                    content_type: { in: [ "video/mp4" ],
+                                  message: "must be a video file (MP4)" },
+                    size: { less_than: 50.megabytes,
+                           message: "should be less than 50MB" }
+
     private
 
     def set_uuid

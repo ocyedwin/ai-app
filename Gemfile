@@ -64,3 +64,4 @@ end
 
 gem "mission_control-jobs"
 gem "faye-websocket"
+gem "active_storage_validations"
