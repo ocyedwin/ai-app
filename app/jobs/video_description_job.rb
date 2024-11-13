@@ -2,37 +2,54 @@ class VideoDescriptionJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    require 'open3'
+    require 'faye/websocket'
+    require 'eventmachine'
 
     video = args[0]
     video_path = ActiveStorage::Blob.service.path_for(video.file.key)
     video_path = video_path.gsub("/home/ubuntu/ai-app/", "")
 
-    command = <<~BASH
-      docker exec \
-      $(docker ps --format '{{.Names}}' | grep longvu) \
-      /opt/conda/bin/conda run -n app_env /bin/bash -c \
-      "export CUDA_VISIBLE_DEVICES=0 && \
-      export PYTHONPATH=/workspace/app:$PYTHONPATH && \
-      cd app && \
-      python -u my_ext/inference.py \
-      --video_path '#{video_path}' \
-      --question 'Describe the video in detail.'"
-    BASH
+    # Add timeout handling
+    timeout = 60 # 1 minute timeout
+    response_received = false
 
-    stdout, stderr, status = Open3.capture3(command)
+    EM.run {
+      timer = EM::Timer.new(timeout) do
+        ws&.close
+        EM.stop
+        raise "WebSocket timeout after #{timeout} seconds"
+      end
+
+      ws = Faye::WebSocket::Client.new('ws://127.0.0.1:6789')
+
+      ws.on :open do |event|
+        p [:open]
+        message_body = {
+          video_path: video_path,
+          question: "What pokemon are there?"
+        }
+        ws.send(message_body.to_json)
+      end
+
+      ws.on :message do |event|
+        p [:message, event.data]
+        video.update!(metadata: { description: event.data })
+        response_received = true
+        timer.cancel
+        ws.close
+        EM.stop
+      end
     
-    if status.success?
-      Rails.logger.info "Script executed successfully"
-      Rails.logger.info "Output: #{stdout}"
+      ws.on :close do |event|
+        p [:close, event.code, event.reason]
+        EM.stop unless response_received
+      end
 
-      video.update!(
-        metadata: { description: stdout }
-      )
-
-    else
-      Rails.logger.error "Script failed with error: #{stderr}"
-      raise "Script execution failed with status: #{status.exitstatus}"
-    end
+      ws.on :error do |event|
+        p [:error, event.message]
+        EM.stop
+        raise "WebSocket error: #{event.message}"
+      end
+    }
   end
 end
