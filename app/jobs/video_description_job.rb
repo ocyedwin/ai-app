@@ -20,7 +20,7 @@ class VideoDescriptionJob < ApplicationJob
         raise "WebSocket timeout after #{timeout} seconds"
       end
 
-      ws = Faye::WebSocket::Client.new("ws://adsisco-longvu_pg-latest:6789")
+      ws = Faye::WebSocket::Client.new("ws://ai_app-longvu_pg:6789")
 
       ws.on :open do |event|
         p [:open]
