@@ -17,7 +17,8 @@ WORKDIR /workspace
 
 RUN groupadd -g 1000 user && \
     useradd -m -u 1000 -g 1000 -s /bin/bash user && \
-    chown -R user:user /workspace
+    chown -R user:user /workspace && \
+    echo "user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 USER user
 ENV PATH /home/user/.local/bin:$PATH
