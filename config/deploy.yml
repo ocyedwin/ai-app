@@ -98,7 +98,10 @@ accessories:
     host: 34.126.183.183
     directories:
       - /home/ubuntu/rails_storage:/workspace/app/storage
-    cmd: tail -f /dev/null
+    options:
+      gpus: all
+      mount: 'type=volume,source=nfs_data,target=/workspace/app/checkpoints,volume-driver=local,volume-opt=type=nfs,"volume-opt=o=addr=101.100.182.29,rw,nolock,fsc",volume-opt=device=:/volume1/workspace/longvu/checkpoints'
+
 #   db:
 #     image: mysql:8.0
 #     host: 192.168.0.2

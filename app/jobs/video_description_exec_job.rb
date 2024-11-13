@@ -1,4 +1,4 @@
-class VideoDescriptionJob < ApplicationJob
+class VideoDescriptionExecJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
