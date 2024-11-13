@@ -6,7 +6,7 @@ EM.run {
 
   ws.on :open do |event|
     p [:open]
-    ws.send('{"video_path": "storage/2x/3b/2x3bz9om18gjbr1gklei7rb1rbbj", "question": "What is this video about?"}')
+    ws.send('{"video_path": "storage/2x/3b/2x3bz9om18gjbr1gklei7rb1rbbj", "question": "What pokemon are there?"}')
   end
 
   ws.on :message do |event|
