@@ -1,4 +1,5 @@
 class Video < ApplicationRecord
+    broadcasts_refreshes
     before_create :set_uuid
     after_create :generate_description
 
