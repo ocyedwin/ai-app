@@ -26,7 +26,6 @@ class VideoDescriptionJob < ApplicationJob
       Rails.logger.info "Script executed successfully"
       Rails.logger.info "Output: #{stdout}"
 
-      video = Video.first
       video.update!(
         metadata: { description: stdout }
       )

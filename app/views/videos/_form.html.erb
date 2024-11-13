@@ -24,11 +24,13 @@
   -->
 
   <div>
-    <%= form.label :file, "Upload Video" %>
+    <%# form.label :file, "Upload Video" %>
     <%= form.file_field :file, accept: 'video/*' %>
   </div>
 
+  <br>
+
   <div>
-    <%= form.submit %>
+    <%= form.submit "Upload Video" %>
   </div>
 <% end %>
