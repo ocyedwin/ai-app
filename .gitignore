@@ -34,3 +34,4 @@
 /config/master.key
 
 longvu_pg/app
+__pycache__

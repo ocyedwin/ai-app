@@ -28,8 +28,9 @@ def parse_args():
                         help='Question to ask about the video')
     return parser.parse_args()
 
-def main():
-    args = parse_args()
+def main(args=None):
+    if args is None:
+        args = parse_args()
     video_path = args.video_path
     qs = args.question
 
@@ -68,6 +69,7 @@ def main():
         )
     pred = tokenizer.batch_decode(output_ids, skip_special_tokens=True)[0].strip()
     print(pred)
+    return pred
 
 if __name__ == "__main__":
     main()

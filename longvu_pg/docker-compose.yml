@@ -4,14 +4,15 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 7860:7860
+      - 6789:6789
     volumes:
       - type: volume
         source: app
         target: /workspace/app
       - ./my_ext:/workspace/app/my_ext
       - ../storage:/workspace/app/storage
-    command: tail -f /dev/null
+      - nfs_data:/workspace/app/checkpoints
+    # command: tail -f /dev/null
     privileged: true
     environment:
       - HF_TOKEN=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
@@ -31,3 +32,9 @@ volumes:
       type: none
       device: ./app
       o: bind
+  nfs_data:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=101.100.182.29,rw,nolock,fsc
+      device: :/volume1/workspace/longvu/checkpoints

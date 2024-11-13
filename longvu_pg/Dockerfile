@@ -36,4 +36,10 @@ RUN git clone https://github.com/Vision-CAIR/LongVU app && \
     cd app && \
     pip install --no-cache-dir -r requirements.txt
 
+ENV PYTHONPATH /workspace/app:$PYTHONPATH
+COPY my_ext /workspace/app/my_ext
+
 RUN pip install --no-cache-dir notebook matplotlib wandb
+
+WORKDIR /workspace/app
+CMD ["conda", "run", "-n", "app_env", "python", "-u", "my_ext/server.py"]
