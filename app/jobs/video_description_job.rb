@@ -3,7 +3,11 @@ class VideoDescriptionJob < ApplicationJob
 
   def perform(*args)
     require 'open3'
-    
+
+    video = args[0]
+    video_path = ActiveStorage::Blob.service.path_for(video.file.key)
+    video_path = video_path.gsub("/home/ubuntu/ai-app/", "")
+
     command = <<~BASH
       docker exec \
       $(docker ps --format '{{.Names}}' | grep longvu) \
@@ -12,8 +16,8 @@ class VideoDescriptionJob < ApplicationJob
       export PYTHONPATH=/workspace/app:$PYTHONPATH && \
       cd app && \
       python -u my_ext/inference.py \
-      --video_path 'storage/29/9g/299gqghqhzscgf11qyew58hvvuuz' \
-      --question 'What pokemon are there?'"
+      --video_path '#{video_path}' \
+      --question 'Describe the video in detail.'"
     BASH
 
     stdout, stderr, status = Open3.capture3(command)
