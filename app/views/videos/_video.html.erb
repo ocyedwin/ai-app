@@ -9,7 +9,11 @@
 
   <p>
     <strong>Metadata:</strong>
-    <%= video.metadata %>
+    <% if video.metadata&.key?('description') %>
+      <%= video.metadata['description'] %>
+    <% else %>
+      Generating description...
+    <% end %>
   </p>
 
   <div>
