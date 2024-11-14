@@ -2,70 +2,39 @@ class VideoDescriptionJob < ApplicationJob
   queue_as :default
 
   def perform(*args)
-    require "faye/websocket"
-    require "eventmachine"
-  
+    require "async"
+    require "async/http/endpoint"
+    require "async/websocket/client"
+
     video = args[0]
     video_path = ActiveStorage::Blob.service.path_for(video.file.key)
     video_path = "storage#{video_path.split("storage").last}"
-  
-    # Add timeout handling
-    timeout = 60 # 1 minute timeout
-    response_received = false
-  
-    em_block = proc {
-      timer = EM::Timer.new(timeout) do
-        ws&.close
-        EM.stop
-        raise "WebSocket timeout after #{timeout} seconds"
-      end
-  
-      ws_url = Rails.env.development? ? "ws://longvu_pg:6789" : "ws://ai_app-longvu_pg:6789"
-      ws = Faye::WebSocket::Client.new(ws_url)
-  
-      ws.on :open do |event|
-        p [:open]
-        message_body = {
+
+    url = Rails.env.development? ? "ws://ai-app_devcontainer_longvu_pg_1:6789" : "ws://ai_app-longvu_pg:6789"
+
+    Async do |task|
+      task.async do
+        endpoint = Async::HTTP::Endpoint.parse(url)
+
+        frame = {
           video_path: video_path,
           question: "Describe the video in detail."
-        }.compact
-  
-        begin
-          ws.send(message_body.to_json)
-        rescue => e
-          Rails.logger.error("Failed to send WebSocket message: #{e.message}")
-          ws.close
-          EM.stop
-          raise
+        }.to_json
+
+        Async::WebSocket::Client.connect(endpoint) do |connection|
+          puts "Connected to server (#{frame})"
+          connection.write(frame)
+          puts "Sent message to server (#{frame})"
+
+          while message = connection.read
+            puts "Received for #{frame}: #{message.to_str}"
+            video.update!(metadata: { description: message.to_str })
+            puts "Closing connection..."
+            connection.close
+            break
+          end
         end
       end
-  
-      ws.on :message do |event|
-        p [:message, event.data]
-        video.update!(metadata: { description: event.data })
-        response_received = true
-        timer.cancel
-        ws.close
-        EM.stop
-      end
-  
-      ws.on :close do |event|
-        p [:close, event.code, event.reason]
-        EM.stop unless response_received
-      end
-  
-      ws.on :error do |event|
-        p [:error, event.message]
-        EM.stop
-        raise "WebSocket error: #{event.message}"
-      end
-    }
-  
-    if EM.reactor_running?
-      EM.next_tick { em_block.call }
-    else
-      EM.run { em_block.call }
     end
   end
-  
 end
