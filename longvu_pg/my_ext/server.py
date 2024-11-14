@@ -24,13 +24,16 @@ async def echo(websocket):
             args = MockArgs(video_path, question)
                 
             # Run inference and get result
-            result = inference_main(args)  # Now captures the return value
+            result = inference_main(args)
 
             await websocket.send(result)
+            print(f"Sent response to {websocket.remote_address}")
     except websockets.exceptions.ConnectionClosedError:
         print(f"Connection closed by client {websocket.remote_address}")
     except Exception as e:
         print(f"Error handling connection from {websocket.remote_address}: {str(e)}")
+    finally:
+        print(f"Connection finished with {websocket.remote_address}")
 
 
 async def main():
