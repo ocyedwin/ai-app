@@ -61,11 +61,13 @@ def main(args=None):
             input_ids,
             images=video,
             image_sizes=image_sizes,
-            do_sample=False,
+            do_sample=True,
             temperature=0.2,
             max_new_tokens=128,
             use_cache=True,
             stopping_criteria=[stopping_criteria],
+            attention_mask=input_ids.ne(tokenizer.pad_token_id),
+            pad_token_id=tokenizer.pad_token_id
         )
     pred = tokenizer.batch_decode(output_ids, skip_special_tokens=True)[0].strip()
     print(pred)

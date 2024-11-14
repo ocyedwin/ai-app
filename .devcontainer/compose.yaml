@@ -29,6 +29,8 @@ services:
     volumes:
       - ../storage:/workspace/app/storage
       - nfs_data:/workspace/app/checkpoints
+      - ../longvu_pg/my_ext:/workspace/app/my_ext
+    command: tail -f /dev/null
     ports:
       - 6789:6789
     deploy:
