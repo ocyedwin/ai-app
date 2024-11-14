@@ -21,4 +21,17 @@ Things you may want to cover:
 
 * Deployment instructions
 
+```sh
+# Set registry password
+export KAMAL_REGISTRY_PASSWORD=${your-password}
+
+# Build accessory
+cd longvu_pg && ./build.sh
+kamal accessory remove longvu_pg
+kamal accessory boot longvu_pg
+
+# Build app
+kamal deploy
+```
+
 * ...
