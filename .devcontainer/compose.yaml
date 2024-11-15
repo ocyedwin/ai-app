@@ -10,6 +10,14 @@ services:
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
 
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [ gpu ]
+
     # Uncomment the next line to use a non-root user for all processes.
     # user: vscode
 
