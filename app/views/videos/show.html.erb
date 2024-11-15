@@ -21,10 +21,13 @@
 
 <% if @video.frames.present? %>
   <% sorted_frames = @video.frames.sort_by { |f| f.filename.to_s.scan(/\d+/).first.to_i } %>
-  <% sorted_frames.each do |file| %>
-    <div>
-      <img src="<%= main_app.url_for(file) %>" />
-    </div>
+  <% search_result_keys = @video.metadata&.dig("search_results", "results")&.map { |r| r["key"] } || [] %>
+  <% sorted_frames.each_with_index do |file, index| %>
+    <% if search_result_keys.empty? || search_result_keys.include?(index) %>
+      <div>
+        <img src="<%= main_app.url_for(file) %>" />
+      </div>
+    <% end %>
   <% end %>
 <% end %>
 
