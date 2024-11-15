@@ -1,0 +1,17 @@
+services:
+  rails-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - RAILS_ENV=production
+      - SECRET_KEY_BASE=24fe5a04c695fc382b1eff0e94b893c5
+    ports:
+      - 3000:3000
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [ gpu ]
