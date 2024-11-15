@@ -22,7 +22,7 @@ class Video < ApplicationRecord
     end
 
     def generate_description
-        # VideoDescriptionJob.perform_later(self)
+        VideoDescriptionJob.perform_later(self)
         VideoIndexJob.perform_later(self)
     end
 end
