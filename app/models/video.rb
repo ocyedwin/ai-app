@@ -5,6 +5,9 @@ class Video < ApplicationRecord
 
     has_one_attached :file
 
+    has_one_attached :index
+    has_many_attached :frames
+
     # Add validations
     validates :file, presence: true,
                     content_type: { in: [ "video/mp4" ],
@@ -20,5 +23,6 @@ class Video < ApplicationRecord
 
     def generate_description
         VideoDescriptionJob.perform_later(self)
+        VideoIndexJob.perform_later(self)
     end
 end

@@ -37,7 +37,9 @@ async def echo(websocket):
 
 
 async def main():
+    print("WebSocket server starting on ws://0.0.0.0:6789...")
     async with serve(echo, "0.0.0.0", 6789) as server:
+        print("WebSocket server is running! Waiting for connections...")
         await server.serve_forever()
 
 

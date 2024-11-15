@@ -3,6 +3,12 @@
 <%= turbo_stream_from @video %>
 <%= render @video %>
 
+<% if @video.frames.present? %>
+  <% @video.frames.each do |file| %>
+    <img src="<%= main_app.url_for(file) %>" />
+  <% end %>
+<% end %>
+
 <div>
   <%= link_to "Edit this video", edit_video_path(@video) %> |
   <%= link_to "Back to videos", videos_path %>
