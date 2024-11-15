@@ -1,0 +1,17 @@
+requests
+pillow
+huggingface_hub[inference]
+python-magic
+transformers
+torch
+diffusers
+accelerate
+protobuf
+sentencepiece
+peft
+trl
+deepspeed
+einops
+torchvision
+opencv-python
+usearch
