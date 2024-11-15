@@ -62,7 +62,9 @@ def main():
     index = Index(ndim=ndim)
     index.add(None, vectors, log=True)
 
-    index.save('index.sigclip')
+    video_name = args.video_path.split('/')[-1]
+
+    index.save(f'index.${video_name}')
 
 if __name__ == '__main__':
     main()

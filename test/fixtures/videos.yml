@@ -1,8 +1,10 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  id: MyString
-  metadata: 
+  id: 1
+  metadata: {}
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
 
 two:
   id: MyString
