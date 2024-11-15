@@ -16,7 +16,7 @@ class VideoIndexSearchJob < ApplicationJob
           results = JSON.parse(stdout.lines.last)
           Rails.logger.info "Search results: #{results}"
           video.update!(
-            metadata: video.metadata.merge(
+            metadata: (video.metadata || {}).merge(
                     "search_results" => {
                         "text" => search_text,
                         "results" => results

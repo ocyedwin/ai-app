@@ -3,10 +3,10 @@ class Video < ApplicationRecord
     before_create :set_uuid
     after_create :generate_description
 
-    has_one_attached :file
+    has_one_attached :file, dependent: :purge_later
 
-    has_one_attached :index
-    has_many_attached :frames
+    has_one_attached :index, dependent: :purge_later
+    has_many_attached :frames, dependent: :purge_later
 
     # Add validations
     validates :file, presence: true,
@@ -22,7 +22,7 @@ class Video < ApplicationRecord
     end
 
     def generate_description
-        VideoDescriptionJob.perform_later(self)
+        # VideoDescriptionJob.perform_later(self)
         VideoIndexJob.perform_later(self)
     end
 end

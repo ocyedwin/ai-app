@@ -5,7 +5,7 @@
 
 <%= form_with url: search_video_path(@video.uuid), method: :post do |form| %>
   <%= form.text_field :search_text %>
-  <%= form.submit "Add to Metadata" %>
+  <%= form.submit "Search" %>
 <% end %>
 
 <br>
@@ -13,23 +13,20 @@
 <% if @video.metadata.present? %>
   <% if @video.metadata["search_results"].present? %>
     <%= @video.metadata["search_results"] %>
-    <% @video.metadata["search_results"]["results"].each do |result| %>
-      <%= result["key"] %>
-      <img src="<%= main_app.url_for(@video.frames[result["key"]]) %>" />
-      <% end %>
   <% end %>
 <% end %>
 
 <br>
 <br>
 
-<!--
 <% if @video.frames.present? %>
-  <% @video.frames.each do |file| %>
-    <img src="<%= main_app.url_for(file) %>" />
+  <% sorted_frames = @video.frames.sort_by { |f| f.filename.to_s.scan(/\d+/).first.to_i } %>
+  <% sorted_frames.each do |file| %>
+    <div>
+      <img src="<%= main_app.url_for(file) %>" />
+    </div>
   <% end %>
 <% end %>
--->
 
 <div>
   <%= link_to "Edit this video", edit_video_path(@video) %> |
