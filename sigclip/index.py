@@ -1,3 +1,4 @@
+import os
 import cv2
 import torch
 import numpy as np
@@ -24,6 +25,11 @@ def main():
     parser.add_argument('video_path', type=str, help='Path to the input video file')
     args = parser.parse_args()
 
+    file_name = args.video_path.split('/')[-1]
+    # create a working directory for the video using absolute path
+    working_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'tmp', file_name))
+    os.makedirs(working_dir, exist_ok=True)
+
     cap = cv2.VideoCapture(args.video_path)
     fps = cap.get(cv2.CAP_PROP_FPS)
 
@@ -48,7 +54,7 @@ def main():
         image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         pil_image = Image.fromarray(image_rgb)
 
-        image_path = f'frames/frame_{int(current_time/frame_interval)}.png'
+        image_path = f'{working_dir}/frame_{int(current_time/frame_interval)}.png'
         pil_image.save(image_path)
 
         image_paths.append(image_path)
@@ -64,7 +70,7 @@ def main():
 
     video_name = args.video_path.split('/')[-1]
 
-    index.save(f'index.${video_name}')
+    index.save(f'{working_dir}/index.${video_name}')
 
 if __name__ == '__main__':
     main()
