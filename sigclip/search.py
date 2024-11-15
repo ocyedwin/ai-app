@@ -5,6 +5,7 @@ from PIL import Image
 from usearch.index import Index
 from transformers import AutoProcessor, AutoModel
 import argparse
+import json
 
 model = AutoModel.from_pretrained("google/siglip-so400m-patch14-384")
 processor = AutoProcessor.from_pretrained("google/siglip-so400m-patch14-384")
@@ -39,8 +40,13 @@ def main():
     index = Index.restore(args.index)
     matches = search_index(args.query, index, args.top_k)
 
-    for match in matches:
-        print(f"Key: {match.key}, Distance: {match.distance}")
+    # Convert results to JSON
+    results = [{
+        "key": int(match.key),
+        "distance": float(match.distance)
+    } for match in matches]
+    
+    print(json.dumps(results))
 
 if __name__ == '__main__':
     main()

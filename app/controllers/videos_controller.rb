@@ -1,5 +1,5 @@
 class VideosController < ApplicationController
-  before_action :set_video, only: %i[ show edit update destroy ]
+  before_action :set_video, only: %i[ show edit update destroy search]
 
   # GET /videos or /videos.json
   def index
@@ -55,6 +55,23 @@ class VideosController < ApplicationController
     respond_to do |format|
       format.html { redirect_to videos_path, status: :see_other, notice: "Video was successfully destroyed." }
       format.json { head :no_content }
+    end
+  end
+
+  def search
+    VideoIndexSearchJob.perform_later(@video, params[:search_text])
+
+    <<~DOC
+    current_metadata = @video.metadata || {}
+    updated_metadata = current_metadata.merge("search_text" => params[:search_text])
+    @video.update(metadata: updated_metadata)
+
+    respond_to do |format|
+      format.html { redirect_to video_path(@video.uuid), notice: "Video was successfully updated." }
+    end
+    DOC
+    respond_to do |format|
+      format.html { redirect_to video_path(@video.uuid), notice: "Performing search." }
     end
   end
 

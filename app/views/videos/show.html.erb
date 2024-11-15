@@ -3,11 +3,33 @@
 <%= turbo_stream_from @video %>
 <%= render @video %>
 
+<%= form_with url: search_video_path(@video.uuid), method: :post do |form| %>
+  <%= form.text_field :search_text %>
+  <%= form.submit "Add to Metadata" %>
+<% end %>
+
+<br>
+
+<% if @video.metadata.present? %>
+  <% if @video.metadata["search_results"].present? %>
+    <%= @video.metadata["search_results"] %>
+    <% @video.metadata["search_results"]["results"].each do |result| %>
+      <%= result["key"] %>
+      <img src="<%= main_app.url_for(@video.frames[result["key"]]) %>" />
+      <% end %>
+  <% end %>
+<% end %>
+
+<br>
+<br>
+
+<!--
 <% if @video.frames.present? %>
   <% @video.frames.each do |file| %>
     <img src="<%= main_app.url_for(file) %>" />
   <% end %>
 <% end %>
+-->
 
 <div>
   <%= link_to "Edit this video", edit_video_path(@video) %> |
