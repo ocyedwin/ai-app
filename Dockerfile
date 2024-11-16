@@ -104,6 +104,9 @@ RUN conda init bash && \
 # Use SHELL command to ensure conda is initialized for each RUN command
 SHELL ["conda", "run", "-n", "app_env", "/bin/bash", "-c"]
 
+COPY sigclip/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 
