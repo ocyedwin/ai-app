@@ -9,7 +9,10 @@ class VideoIndexSearchJob < ApplicationJob
       index_path = ActiveStorage::Blob.service.path_for(video.index.key)
 
       script_path = Rails.root.join("sigclip", "search.py")
-      stdout, stderr, status = Open3.capture3("python3", script_path.to_s, "--index", index_path.to_s, "--query", search_text)
+      # Modify the command to use conda environment
+      conda_env = "app_env"  # Replace with your conda environment name
+      conda_command = "conda run -n #{conda_env} python3 #{script_path.to_s} --index #{index_path.to_s} --query #{search_text}"
+      stdout, stderr, status = Open3.capture3(conda_command)
 
       if status.success?
           Rails.logger.info "Successfully processed video search: #{stdout}"
