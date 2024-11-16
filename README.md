@@ -22,6 +22,10 @@ Things you may want to cover:
 * Deployment instructions
 
 ```sh
+mkdir -p /home/ubuntu/rails_storage
+chown -R ubuntu:ubuntu /home/ubuntu/rails_storage
+sudo chmod -R 777 /home/ubuntu/rails_storage
+
 # Set registry password
 export KAMAL_REGISTRY_PASSWORD=${your-password}
 
