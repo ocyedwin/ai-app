@@ -46,7 +46,7 @@ def main():
         "distance": float(match.distance)
     } for match in matches]
     
-    print(json.dumps(results))
+    print(json.dumps(results), flush=True)
 
 if __name__ == '__main__':
     main()
