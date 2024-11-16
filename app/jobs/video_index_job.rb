@@ -8,7 +8,10 @@ class VideoIndexJob < ApplicationJob
         video_path = ActiveStorage::Blob.service.path_for(video.file.key)
 
         script_path = Rails.root.join("sigclip", "index.py")
-        stdout, stderr, status = Open3.capture3("python3", script_path.to_s, video_path.to_s)
+        # Modify the command to use conda environment
+        conda_env = "app_env"  # Replace with your conda environment name
+        conda_command = "conda run -n #{conda_env} python3 #{script_path} #{video_path}"
+        stdout, stderr, status = Open3.capture3(conda_command)
 
         if status.success?
             Rails.logger.info "Successfully processed video: #{stdout}"
