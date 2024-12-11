@@ -54,6 +54,9 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+
+  # Custom development gems
+  gem "htmlbeautifier"
 end
 
 group :test do
@@ -65,4 +68,4 @@ end
 gem "mission_control-jobs"
 gem "active_storage_validations"
 gem "async-websocket"
-gem 'vite_rails'
+gem "vite_rails"
