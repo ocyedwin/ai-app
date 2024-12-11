@@ -3,7 +3,12 @@ import RubyPlugin from 'vite-plugin-ruby'
 
 export default defineConfig({
   esbuild: {
-    target: "esnext"
+    target: "esnext",
+    tsconfigRaw: {
+      compilerOptions: {
+        experimentalDecorators: true,
+      },
+    },
   },
   plugins: [
     RubyPlugin(),

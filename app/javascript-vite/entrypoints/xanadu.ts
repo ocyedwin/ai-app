@@ -5,7 +5,8 @@ import { customElement, property } from 'lit/decorators.js';
 class SimpleGreeting extends LitElement {
     static styles = css`p {color: blue}`;
 
-    name = 'World';
+    @property({ type: String })
+    name = 'Something';
 
     render() {
         return html`<p>Hello, ${this.name}!</p>`;
