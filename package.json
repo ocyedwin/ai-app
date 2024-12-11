@@ -6,6 +6,6 @@
     "vite-plugin-ruby": "^5.1.1"
   },
   "dependencies": {
-    "@lit/reactive-element": "^2.0.4"
+    "lit": "^3.2.1"
   }
 }

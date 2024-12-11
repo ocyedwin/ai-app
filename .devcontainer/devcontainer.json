@@ -28,7 +28,8 @@
     "vscode": {
       "extensions": [
         "aliariff.vscode-erb-beautify",
-        "shopify.ruby-lsp"
+        "shopify.ruby-lsp",
+        "runem.lit-plugin"
       ]
     }
   },
