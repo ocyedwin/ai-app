@@ -27,5 +27,3 @@ export class DraggableBox extends HTMLElement {
         this.style.top = `${topValue + movementY}px`;
     }
 }
-
-DraggableBox.register();
