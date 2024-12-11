@@ -65,3 +65,4 @@ end
 gem "mission_control-jobs"
 gem "active_storage_validations"
 gem "async-websocket"
+gem 'vite_rails'

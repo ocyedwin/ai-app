@@ -163,6 +163,7 @@ GEM
       reline (>= 0.3.8)
     dotenv (3.1.4)
     drb (2.2.1)
+    dry-cli (1.2.0)
     ed25519 (1.3.0)
     erubi (1.13.0)
     et-orbi (1.2.11)
@@ -230,6 +231,7 @@ GEM
       stimulus-rails
       turbo-rails
     msgpack (1.7.5)
+    mutex_m (0.3.0)
     net-imap (0.5.1)
       date
       net-protocol
@@ -245,6 +247,8 @@ GEM
       net-protocol
     net-ssh (7.3.0)
     nio4r (2.7.4)
+    nokogiri (1.16.7-aarch64-linux)
+      racc (~> 1.4)
     nokogiri (1.16.7-x86_64-linux)
       racc (~> 1.4)
     ostruct (0.6.1)
@@ -277,6 +281,8 @@ GEM
     raabro (1.4.0)
     racc (1.8.1)
     rack (3.1.8)
+    rack-proxy (0.7.7)
+      rack
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
@@ -351,6 +357,7 @@ GEM
       fugit (~> 1.11.0)
       railties (>= 7.1)
       thor (~> 1.3.1)
+    sqlite3 (2.2.0-aarch64-linux-gnu)
     sqlite3 (2.2.0-x86_64-linux-gnu)
     sshkit (1.23.2)
       base64
@@ -362,6 +369,7 @@ GEM
       railties (>= 6.0.0)
     stringio (3.1.2)
     thor (1.3.2)
+    thruster (0.1.8-aarch64-linux)
     thruster (0.1.8-x86_64-linux)
     timeout (0.4.2)
     traces (0.14.1)
@@ -375,6 +383,15 @@ GEM
     unicode-display_width (2.6.0)
     uri (1.0.1)
     useragent (0.16.10)
+    vite_rails (3.0.19)
+      railties (>= 5.1, < 9)
+      vite_ruby (~> 3.0, >= 3.2.2)
+    vite_ruby (3.9.1)
+      dry-cli (>= 0.7, < 2)
+      logger (~> 1.6)
+      mutex_m
+      rack-proxy (~> 0.6, >= 0.6.1)
+      zeitwerk (~> 2.2)
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -389,6 +406,7 @@ GEM
     zeitwerk (2.7.1)
 
 PLATFORMS
+  aarch64-linux
   x86_64-linux
 
 DEPENDENCIES
@@ -415,6 +433,7 @@ DEPENDENCIES
   thruster
   turbo-rails
   tzinfo-data
+  vite_rails
   web-console
 
 BUNDLED WITH
