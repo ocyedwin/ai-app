@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "vite": "^5.4.11",
+    "vite-plugin-ruby": "^5.1.1"
+  },
+  "dependencies": {
+    "lit": "^3.2.1",
+    "viz-observer": "2.0.0-beta.0",
+    "perfect-arrows": "^0.3.7"
+  }
+}

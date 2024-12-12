@@ -1,5 +1,6 @@
 # Use Nvidia CUDA as base base its more complex
-FROM nvidia/cuda:12.6.2-cudnn-devel-ubuntu24.04 as base
+# FROM nvidia/cuda:12.6.2-cudnn-devel-ubuntu24.04 AS base
+FROM ubuntu:24.04 AS base
 
 # Install essential build dependencies
 RUN apt-get update && apt-get install -y \
@@ -9,10 +10,12 @@ RUN apt-get update && apt-get install -y \
     nfs-common iputils-ping sudo wget \
     && rm -rf /var/lib/apt/lists/*
 
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
-    bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/conda && \
+# RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
+#     bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/conda && \
+RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh && \
+    bash Miniconda3-latest-Linux-aarch64.sh -b -p /opt/conda && \
     echo "export PATH=/opt/conda/bin:$PATH" > /etc/profile.d/conda.sh
-ENV PATH /opt/conda/bin:$PATH
+ENV PATH=/opt/conda/bin:$PATH
 
 RUN conda init bash && \
     echo 'export PATH=/opt/conda/bin:$PATH' >> ~/.bashrc && \
@@ -41,3 +44,10 @@ RUN echo 'export PATH="/root/.rbenv/bin:/root/.rbenv/shims:$PATH"' >> ~/.bashrc 
 ENV PATH="/root/.rbenv/bin:/root/.rbenv/shims:$PATH"
 
 RUN rbenv install 3.3.6 && rbenv global 3.3.6 && gem install bundler
+
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash && \
+    export NVM_DIR="$HOME/.nvm" && \
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" && \
+    nvm install 22 && \
+    nvm use 22
