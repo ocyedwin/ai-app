@@ -27,7 +27,6 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "aliariff.vscode-erb-beautify",
         "shopify.ruby-lsp",
         "runem.lit-plugin"
       ]
