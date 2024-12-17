@@ -9,5 +9,8 @@
     "lit": "^3.2.1",
     "viz-observer": "2.0.0-beta.0",
     "perfect-arrows": "^0.3.7"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.9.5"
   }
 }
