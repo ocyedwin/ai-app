@@ -37,17 +37,6 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y build-essential git pkg-config && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Install Node.js for Vite
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash && \
-    export NVM_DIR="$HOME/.nvm" && \
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
-    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" && \
-    nvm install 22 && \
-    nvm use 22 && \
-    npm i
-
-
-
 # Install application gems
 COPY Gemfile Gemfile.lock ./
 RUN bundle install && \
@@ -56,6 +45,16 @@ RUN bundle install && \
 
 # Copy application code
 COPY . .
+
+# Install Node.js for Vite
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash && \
+    export NVM_DIR="$HOME/.nvm" && \
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" && \
+    nvm install 22 && \
+    nvm use 22 && \
+    npm install -g npx && \
+    npm i
 
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
