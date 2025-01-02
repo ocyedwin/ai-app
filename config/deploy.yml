@@ -80,6 +80,7 @@ asset_path: /rails/public/assets
 builder:
   arch: amd64
   remote: ssh://ubuntu@18.141.221.15
+  context: . # For dirty deploy
 
   # # Build image via remote server (useful for faster amd64 builds on arm64 computers)
   # remote: ssh://docker@docker-builder-server

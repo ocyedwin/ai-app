@@ -8,8 +8,15 @@ services:
     env_file:
       - .env.tmp
 
+    # https://serversideup.net/how-to-get-ssh-to-work-with-1password-docker-desktop-macos-within-a-container/
+    environment:
+      - SSH_AUTH_SOCK=/run/host-services/ssh-auth.sock
+
     volumes:
       - ../..:/workspaces:cached
+      - ${HOME}/.ssh:/.ssh:ro
+      - ${HOME}/.ssh/known_hosts:/.ssh/known_hosts:rw
+      - /run/host-services/ssh-auth.sock:/run/host-services/ssh-auth.sock
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
