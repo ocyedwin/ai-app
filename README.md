@@ -43,6 +43,7 @@ kamal accessory remove longvu_pg
 kamal accessory boot longvu_pg
 
 # Build app
+!commit changes to git
 kamal deploy
 ```
 
