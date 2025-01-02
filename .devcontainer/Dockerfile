@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
     # Rails dependencies
     git curl libssl-dev libreadline-dev zlib1g-dev autoconf bison build-essential libyaml-dev libreadline-dev libncurses5-dev libffi-dev libgdbm-dev \
     # My dependencies
-    nfs-common iputils-ping sudo wget \
+    nfs-common iputils-ping sudo wget unzip \
     && rm -rf /var/lib/apt/lists/*
 
 # RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
@@ -51,3 +51,13 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | b
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" && \
     nvm install 22 && \
     nvm use 22
+
+# ARCH="<choose between 386/amd64/arm/arm64>" 
+RUN ARCH="arm64" && \
+    wget "https://cache.agilebits.com/dist/1P/op2/pkg/v2.30.3/op_linux_${ARCH}_v2.30.3.zip" -O op.zip && \
+    unzip -d op op.zip && \
+    mv op/op /usr/local/bin/ && \
+    rm -r op.zip op && \
+    groupadd -f onepassword-cli && \
+    chgrp onepassword-cli /usr/local/bin/op && \
+    chmod g+s /usr/local/bin/op

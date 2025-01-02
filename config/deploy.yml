@@ -1,14 +1,14 @@
 # Name of your application. Used to uniquely configure containers.
-service: ai_app
+service: ace_app
 
 # Name of the container image.
-image: adsisco/ai_app
+image: adsisco/ace_app
 
 # Deploy to these servers.
 servers:
   web:
     hosts:
-      - 34.126.183.183
+      - 13.214.174.192
     options:
       gpus: all
   # job:
@@ -20,9 +20,9 @@ servers:
 # Remove this section when using multiple web servers and ensure you terminate SSL at your load balancer.
 #
 # Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
-proxy:
-  ssl: true
-  host: emereg.co
+#proxy:
+#  ssl: true
+#  host: emereg.co
 
 # Credentials for your image host.
 registry:
@@ -95,15 +95,15 @@ ssh:
   user: ubuntu
 
 # Use accessory services (secrets come from .kamal/secrets).
-accessories:
-  longvu_pg:
-    image: adsisco/longvu_pg:latest
-    host: 34.126.183.183
-    directories:
-      - /home/ubuntu/rails_storage:/workspace/app/storage
-    options:
-      gpus: all
-      mount: 'type=volume,source=nfs_data,target=/workspace/app/checkpoints,volume-driver=local,volume-opt=type=nfs,"volume-opt=o=addr=101.100.182.29,rw,nolock,fsc",volume-opt=device=:/volume1/workspace/longvu/checkpoints'
+#accessories:
+#  longvu_pg:
+#    image: adsisco/longvu_pg:latest
+#    host: 34.126.183.183
+#    directories:
+#      - /home/ubuntu/rails_storage:/workspace/app/storage
+#    options:
+#      gpus: all
+#      mount: 'type=volume,source=nfs_data,target=/workspace/app/checkpoints,volume-driver=local,volume-opt=type=nfs,"volume-opt=o=addr=101.100.182.29,rw,nolock,fsc",volume-opt=device=:/volume1/workspace/longvu/checkpoints'
 
 #   db:
 #     image: mysql:8.0
