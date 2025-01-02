@@ -25,6 +25,7 @@ RUN apt-get update && apt-get install -y \
 
 # Use SHELL command to ensure conda is initialized for each RUN command
 #SHELL ["conda", "run", "-n", "app_env", "/bin/bash", "-c"]
+SHELL ["/bin/bash", "-c"]
 
 #COPY sigclip/requirements.txt .
 #RUN pip install --no-cache-dir -r requirements.txt
