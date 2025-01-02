@@ -42,6 +42,14 @@ RUN bundle install && \
 # Copy application code
 COPY . .
 
+# Install Node.js for Vite
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash && \
+    export NVM_DIR="$HOME/.nvm" && \
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && \
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" && \
+    nvm install 22 && \
+    nvm use 22
+
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
@@ -52,7 +60,8 @@ RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 
 # Final stage for app image
-FROM nvidia/cuda:12.6.2-cudnn-devel-ubuntu24.04 AS final
+# FROM nvidia/cuda:12.6.2-cudnn-devel-ubuntu24.04 AS final
+FROM ubuntu:24.04 AS final
 
 # Rails app lives here
 WORKDIR /rails
@@ -66,10 +75,10 @@ RUN apt-get update -qq && \
     nfs-common iputils-ping sudo wget && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
-    bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/conda && \
-    echo "export PATH=/opt/conda/bin:$PATH" > /etc/profile.d/conda.sh
-ENV PATH=/opt/conda/bin:$PATH
+#RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
+#    bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/conda && \
+#    echo "export PATH=/opt/conda/bin:$PATH" > /etc/profile.d/conda.sh
+#ENV PATH=/opt/conda/bin:$PATH
 
 # Set production environment
 ENV RAILS_ENV="production" \
@@ -95,17 +104,17 @@ RUN groupadd --system --gid 1001 rails && \
     chown -R rails:rails db log storage tmp
 USER 1001:1001
 
-RUN conda init bash && \
-    echo 'export PATH=/opt/conda/bin:$PATH' >> ~/.bashrc && \
-    . ~/.bashrc && \
-    conda create -n app_env python=3.10 -y && \
-    echo "conda activate app_env" >> ~/.bashrc
+#RUN conda init bash && \
+#    echo 'export PATH=/opt/conda/bin:$PATH' >> ~/.bashrc && \
+#    . ~/.bashrc && \
+#    conda create -n app_env python=3.10 -y && \
+#    echo "conda activate app_env" >> ~/.bashrc
 
 # Use SHELL command to ensure conda is initialized for each RUN command
-SHELL ["conda", "run", "-n", "app_env", "/bin/bash", "-c"]
+#SHELL ["conda", "run", "-n", "app_env", "/bin/bash", "-c"]
 
-COPY sigclip/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+#COPY sigclip/requirements.txt .
+#RUN pip install --no-cache-dir -r requirements.txt
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]

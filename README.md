@@ -28,14 +28,16 @@ bin/dev
 * Deployment instructions
 
 ```sh
+gem install kamal
+kamal setup
+
+# TODO: run as hooks?
+# On instance:
 mkdir -p /home/ubuntu/rails_storage
 chown -R ubuntu:ubuntu /home/ubuntu/rails_storage
 sudo chmod -R 777 /home/ubuntu/rails_storage
 
-# Set registry password
-export KAMAL_REGISTRY_PASSWORD=${your-password}
-
-# Build accessory
+# (Optional) Build accessory
 cd longvu_pg && ./build.sh
 kamal accessory remove longvu_pg
 kamal accessory boot longvu_pg
