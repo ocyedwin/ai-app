@@ -53,7 +53,6 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | b
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" && \
     nvm install 22 && \
     nvm use 22 && \
-    npm install -g npx && \
     npm i
 
 # Precompile bootsnap code for faster boot times
