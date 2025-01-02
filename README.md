@@ -27,6 +27,8 @@ bin/dev
 
 * Deployment instructions
 
+NOTE: for error "requireStack: [ '/rails/node_modules/rollup/dist/native.js' ]", optional rollup dependency required for Vite in production (https://stackoverflow.com/questions/77569907/error-in-react-vite-project-due-to-rollup-dependency-module-not-found).
+
 ```sh
 gem install kamal
 kamal setup

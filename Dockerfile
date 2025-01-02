@@ -56,11 +56,10 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | b
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" && \
     nvm install 22 && \
     nvm use 22 && \
-    npm i && \
-    SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+    npm i
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-#RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 # Final stage for app image
 # FROM nvidia/cuda:12.6.2-cudnn-devel-ubuntu24.04 AS final
