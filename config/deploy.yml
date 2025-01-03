@@ -4,11 +4,13 @@ service: ace_app
 # Name of the container image.
 image: adsisco/ace_app
 
+<% instance_ip = `op read "op://Developer/Terraform/instance_ip"`.gsub("\n", "") %>
+
 # Deploy to these servers.
 servers:
   web:
     hosts:
-      - 18.141.221.15
+      - <%= instance_ip %>
   #  options:
   #    gpus: all
   # job:
@@ -79,7 +81,7 @@ asset_path: /rails/public/assets
 # Configure the image builder.
 builder:
   arch: amd64
-  remote: ssh://ubuntu@18.141.221.15
+  #remote: ssh://ubuntu@18.141.221.15
   context: . # For dirty deploy
 
   # # Build image via remote server (useful for faster amd64 builds on arm64 computers)

@@ -59,48 +59,38 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | b
     nvm use 22 && \
     npm i && \
     SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
-
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 #RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 # Final stage for app image
 # FROM nvidia/cuda:12.6.2-cudnn-devel-ubuntu24.04 AS final
-FROM ubuntu:24.04 AS final
+FROM ubuntu:24.04
 
-# Rails app lives here
+# Copied from above stages
 WORKDIR /rails
-
-# Install base packages
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 ffmpeg \
-    # additional packages in base but not final
+    # additional packages for Ruby required in final
     libyaml-dev tzdata \
     # my packages 
     nfs-common iputils-ping sudo wget && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+ENV RAILS_ENV="production" \
+    BUNDLE_DEPLOYMENT="1" \
+    BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_WITHOUT="development"
 
 #RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
 #    bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/conda && \
 #    echo "export PATH=/opt/conda/bin:$PATH" > /etc/profile.d/conda.sh
 #ENV PATH=/opt/conda/bin:$PATH
 
-# Set production environment
-ENV RAILS_ENV="production" \
-    BUNDLE_DEPLOYMENT="1" \
-    BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development"
-
-# Copy Ruby installation from base image
-COPY --from=base /usr/local/bin/ruby /usr/local/bin/
-COPY --from=base /usr/local/lib/ruby /usr/local/lib/ruby
-COPY --from=base /usr/local/include/ruby-3.3.0 /usr/local/include/ruby-3.3.0
-COPY --from=base /usr/local/lib/libruby* /usr/local/lib/
-COPY --from=base /usr/local/bin/bundle /usr/local/bin/
-COPY --from=base /usr/local/bin/bundler /usr/local/bin/
+# Copy ruby
+COPY --from=build /usr/local /usr/local
 
 # Copy built artifacts: gems, application
 COPY --from=build "${BUNDLE_PATH}" "${BUNDLE_PATH}"
-COPY --from=build /rails /rails
+COPY --chmod=755 --from=build /rails /rails
 
 # Run and own only the runtime files as a non-root user for security
 RUN groupadd --system --gid 1001 rails && \

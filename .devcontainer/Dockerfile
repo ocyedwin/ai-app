@@ -1,6 +1,9 @@
+ARG RUBY_VERSION=3.3.6
+FROM docker.io/library/ruby:$RUBY_VERSION-slim AS ruby
+
 # Use Nvidia CUDA as base base its more complex
 # FROM nvidia/cuda:12.6.2-cudnn-devel-ubuntu24.04 AS base
-FROM ubuntu:24.04 AS base
+FROM ubuntu:24.04
 
 # Install essential build dependencies
 RUN apt-get update && apt-get install -y \
@@ -25,26 +28,29 @@ RUN apt-get update && apt-get install -y \
 
 # Use SHELL command to ensure conda is initialized for each RUN command
 #SHELL ["conda", "run", "-n", "app_env", "/bin/bash", "-c"]
-SHELL ["/bin/bash", "-c"]
+#SHELL ["/bin/bash", "-c"]
 
 #COPY sigclip/requirements.txt .
 #RUN pip install --no-cache-dir -r requirements.txt
 
 #RUN pip install --no-cache-dir notebook matplotlib wandb
 
-RUN git clone https://github.com/rbenv/rbenv.git ~/.rbenv \
-    && git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+#RUN git clone https://github.com/rbenv/rbenv.git ~/.rbenv \
+#    && git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
 
 # Add rbenv to PATH in both ~/.bashrc and ~/.bash_profile for runtime
-RUN echo 'export PATH="/root/.rbenv/bin:/root/.rbenv/shims:$PATH"' >> ~/.bashrc && \
-    echo 'eval "$(rbenv init -)"' >> ~/.bashrc && \
-    echo 'export PATH="/root/.rbenv/bin:/root/.rbenv/shims:$PATH"' >> ~/.bash_profile && \
-    echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+#RUN echo 'export PATH="/root/.rbenv/bin:/root/.rbenv/shims:$PATH"' >> ~/.bashrc && \
+#    echo 'eval "$(rbenv init -)"' >> ~/.bashrc && \
+#    echo 'export PATH="/root/.rbenv/bin:/root/.rbenv/shims:$PATH"' >> ~/.bash_profile && \
+#    echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
 
 # Make sure the final PATH includes rbenv paths at runtime
-ENV PATH="/root/.rbenv/bin:/root/.rbenv/shims:$PATH"
+#ENV PATH="/root/.rbenv/bin:/root/.rbenv/shims:$PATH"
 
-RUN rbenv install 3.3.6 && rbenv global 3.3.6 && gem install bundler
+#RUN rbenv install 3.3.6 && rbenv global 3.3.6 && gem install bundler
+
+# Copy Ruby from the first stage
+COPY --from=ruby /usr/local /usr/local
 
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash && \
     export NVM_DIR="$HOME/.nvm" && \

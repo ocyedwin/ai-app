@@ -45,7 +45,8 @@ kamal accessory remove longvu_pg
 kamal accessory boot longvu_pg
 
 # Build app
-!commit changes to git
+!commit changes to git if deploy builder context is not .
+# NOTE: (to fix permission issue) COPY --chmod=755 --from=build /rails /rails
 kamal deploy
 ```
 
